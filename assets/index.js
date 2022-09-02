@@ -13,13 +13,14 @@ class Day {
     }
 }
 
+//Interval to set the day at top of page, only really matters if the day changes so the interval is set to 1 minute
 setInterval(function () {
     var today = moment().format('dddd, MMMM Do');
     currentDay.text(today);
-}, 10000);
+}, 60000);
 
 
-//If in local pull from local and set new Day equal to it, if not in local then create a new empty day object
+//Gets the day object out of local storage and populate the timeblocks with it, only retrieve it if the timestamp on it is from the current day
 function getFromLocal(whatday) {
     if(!localStorage.getItem('day-plan')){
         console.log("Nothing in storage");
@@ -39,23 +40,23 @@ function getFromLocal(whatday) {
 
 }
 
-function storeToLocal(event) {
-    console.log('storeToLocal');
+function storeToLocal(event) { //Stores the Day object to local storage 
+    event.preventDefault();
     var index = Number(event.target.dataset.index);
     var parentEl = event.target.parentNode;
-    console.log(storage.scheduleArray);
     console.log(index);
-    console.log(parentEl.querySelector('.description').value);
+    console.log(parentEl);
     storage.scheduleArray[index] = parentEl.querySelector('.description').value;
 
     localStorage.setItem('day-plan', JSON.stringify(storage));
 }
 
+//This function gets called on page load and populates the timeblocks into the page, could hardcode them into html but this is easier
 function init() {
-    currentDay.text(moment().format('dddd, MMMM Do'));
-    var hour = moment().format('h');
-    console.log(typeof hour);
-    console.log(hourNo.indexOf(Number(hour)));
+    currentDay.text(moment().format('dddd, MMMM Do')); //Sets the currentDay text to a moment on page load because the set interval takes 1 second to load in
+    var hour = moment().format('h'); //Gets the hour so that the colors of the timeblock backgrounds can be done properly
+
+    //Loops 9 times and makes the timeblocks and adds a listener to the save button to save each textarea to localstorage
     for (var i = 0; i < 9; i++) {
         var newBlock = $('<div>').addClass('time-block').addClass('row');
         newBlock.append($('<p>').addClass('hour').text(hourArray[i]));
@@ -70,7 +71,7 @@ function init() {
         container.append(newBlock);
     }
 
-    getFromLocal(stamp)
+    getFromLocal(stamp) //Populates the timeblocks with the data that was saved in local storage
 }
 
 init();
