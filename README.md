@@ -6,4 +6,4 @@ If you ever find you lose track of time during the day and cant keep things sche
 
 ![Page Screenshot](./assets/Work-Scheduler-SC.PNG)
 
-URL: https://cwendland.github.io/coding-quiz/
+URL: https://cwendland.github.io/work-scheduler/
